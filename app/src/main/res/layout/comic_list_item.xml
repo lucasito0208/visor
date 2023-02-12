@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:id="@+id/linear4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/idVista"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:textSize="50dp"
+            android:gravity="center"
+            android:hint="id"
+            android:textColor="@color/black"
+            />
+
+        <LinearLayout
+            android:id="@+id/linear5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/txtTituloLista"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Titulo"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+
+                />
+
+            <TextView
+                android:id="@+id/txtFechaLista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Fecha"
+                android:textSize="20dp"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

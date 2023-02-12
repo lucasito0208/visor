@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity2">
+    tools:context=".MainActivity">
 
 
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
@@ -22,7 +22,7 @@
             android:id="@+id/tvTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TíTULO"
+            android:text="TITULO"
             android:textSize="50dp"
             android:layout_gravity="center"
             android:layout_marginBottom="15dp"/>
@@ -31,7 +31,6 @@
             android:id="@+id/imgComic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars"
             android:layout_gravity="center"
             />
 
@@ -53,7 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear2"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="130dp"
         >
         <Button
             android:id="@+id/btnAnterior"
@@ -70,6 +69,16 @@
 
     </LinearLayout>
 
-
+    <Button
+        android:id="@+id/btnVisorAtras"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="atras"
+        app:layout_constraintTop_toBottomOf="@+id/linear3"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
