@@ -35,6 +35,17 @@ public class Comic {
         this.day = day;
     }
 
+
+
+    public Comic(String img, String num, String title, String day, String month, String year) {
+        this.img = img;
+        this.num = num;
+        this.title = title;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+    }
+
     public Comic() {
     }
 

@@ -13,15 +13,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         >
 
         <TextView
             android:id="@+id/tvTitulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
             android:text="TITULO"
             android:textSize="50dp"
             android:layout_gravity="center"
@@ -30,7 +30,7 @@
         <ImageView
             android:id="@+id/imgComic"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             />
 
@@ -52,7 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linear2"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="100dp"
         >
         <Button
             android:id="@+id/btnAnterior"
@@ -75,7 +75,6 @@
         android:layout_height="wrap_content"
         android:text="atras"
         app:layout_constraintTop_toBottomOf="@+id/linear3"
-        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     EditText edtNum;
     ComicApi comicApi;
 
+    Cursor cursor;
+
+
     public ComicDatabaseSqLiteOpenHelper helper;
 
     @Override
@@ -53,14 +57,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void createComic(int id, String titulo, String fecha) {
+    public void createComic(String id, String titulo, String fecha, String imagen) {
         helper = new ComicDatabaseSqLiteOpenHelper(this);
         SQLiteDatabase database = helper.getWritableDatabase();
         try{
             ContentValues values = new ContentValues();
             values.put("titulo", titulo);
             values.put("fecha", String.valueOf(fecha));
-            values.put("identificador", id);
+            values.put("id", id);
+            values.put("imagen", imagen);
             database.insert("comic", null, values);
             database.close();
             Toast.makeText(this, "Registro guardado", Toast.LENGTH_SHORT).show();
@@ -70,56 +75,75 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void addComics(String id, String titulo, String fecha) {
+    public void addComics(String id, String titulo, String fecha, String imagen) {
         SQLiteDatabase bd = helper.getWritableDatabase();
         if(bd!=null) {
-            String sqlInsert = "insert into comic values('"+id+"', '"+titulo+"', '"+fecha+"')";
+            String sqlInsert = "insert into comic values('"+id+"', '"+titulo+"', '"+fecha+"', '"+imagen+"')";
             bd.execSQL(sqlInsert);
             bd.close();
         }
     }
 
-    private void find(String cod) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://xkcd.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        comicApi = retrofit.create(ComicApi.class);
-        Call<Comic> request = comicApi.find(cod);
+    public void find(String cod) {
 
-        request.enqueue(new Callback<Comic>() {
-            @Override
-            public void onResponse(@NonNull Call<Comic> call, @NonNull Response<Comic> response) {
-                try{
-                    if(response.isSuccessful()) {
-                        Intent i = new Intent(MainActivity.this, MainActivity2.class);
-                        Comic comic = response.body();
+        if(helper.consultarListaComics(edtNum.getText().toString())) {
 
-                        String num = comic.getNum();
-                        String titulo = comic.getTitle();
-                        String fecha = comic.getDay() + "/" + comic.getMonth() + "/" + comic.getYear();
-                        String imagen = comic.getImg();
+            cursor = new ComicDatabaseSqLiteOpenHelper(this).consultarDatos();
+            Intent ii = new Intent(MainActivity.this, MainActivity2.class);
+            String titulo = cursor.getString(1);
+            String fecha = cursor.getString(2);
+            String imagen = cursor.getString(3);
 
-                        createComic(Integer.parseInt(num), titulo, fecha);
-                        addComics(num, titulo, fecha);
+            ii.putExtra("titulo", titulo);
+            ii.putExtra("fecha", fecha);
+            ii.putExtra("imagen", imagen);
 
-                        i.putExtra("titulo", titulo);
-                        i.putExtra("fecha", fecha);
-                        i.putExtra("imagen", imagen);
+            startActivity(ii);
+        }else{
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://xkcd.com/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            comicApi = retrofit.create(ComicApi.class);
+            Call<Comic> request = comicApi.find(cod);
 
-                        startActivity(i);
+            request.enqueue(new Callback<Comic>() {
+                @Override
+                public void onResponse(@NonNull Call<Comic> call, @NonNull Response<Comic> response) {
+                    try{
+                        if(response.isSuccessful()) {
+                            Intent i = new Intent(MainActivity.this, MainActivity2.class);
+                            Comic comic = response.body();
 
+                            assert comic != null;
+                            String num = comic.getNum();
+                            String titulo = comic.getTitle();
+                            String fecha = comic.getDay() + "/" + comic.getMonth() + "/" + comic.getYear();
+                            String imagen = comic.getImg();
+
+                            createComic(num, titulo, fecha, imagen);
+                            addComics(num, titulo, fecha, imagen);
+
+                            //dropComic();
+
+                            i.putExtra("titulo", titulo);
+                            i.putExtra("fecha", fecha);
+                            i.putExtra("imagen", imagen);
+                            i.putExtra("num", num);
+
+                            startActivity(i);
+
+                        }
+                    }catch(Exception e) {
+                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }catch(Exception e) {
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<Comic> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, "Error en la conexión!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
+                @Override
+                public void onFailure(@NonNull Call<Comic> call, @NonNull Throwable t) {
+                    Toast.makeText(MainActivity.this, "Error en la conexión!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        }
 }

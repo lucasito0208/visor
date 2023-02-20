@@ -9,13 +9,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.apirest_retrofit.models.Comic;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity3 extends AppCompatActivity implements ComicRecyclerViewAdapter.OnComicClickListener{
+public class MainActivity3 extends AppCompatActivity{
 
     ArrayList<Comic> listComic;
     RecyclerView recyclerView;
@@ -24,6 +25,9 @@ public class MainActivity3 extends AppCompatActivity implements ComicRecyclerVie
     Cursor cursor;
 
     TextView num, titulo, fecha;
+
+    public ComicDatabaseSqLiteOpenHelper helper;
+    SQLiteDatabase db;
 
 
     @Override
@@ -54,14 +58,29 @@ public class MainActivity3 extends AppCompatActivity implements ComicRecyclerVie
         //onComicClick(comic);
     }
 
-    @Override
+
     public void onComicClick(Comic comicClicked) {
 
-        TextView titulo = findViewById(R.id.txtTituloLista);
+        titulo = findViewById(R.id.txtTituloLista);
+        num = findViewById(R.id.idVista);
         titulo.setOnClickListener(view -> {
-            Intent i = new Intent(MainActivity3.this, MainActivity2.class);
-
-            startActivity(i);
+            //Intent i = new Intent(MainActivity3.this, MainActivity2.class);
+                //Recuperar los datos de la tabla en la base de datos, y enviarlos al visor
+            //startActivity(i);
         });
     }
+
+    /*
+    public Comic retrieveComic(String num){
+        helper = new ComicDatabaseSqLiteOpenHelper(this);
+        db = helper.getReadableDatabase();
+        try{
+
+
+        }catch(Exception e) {
+            Toast.makeText(this, "Error al recuperar comic", Toast.LENGTH_SHORT).show();
+        }
+    }
+    */
+
 }

@@ -28,27 +28,29 @@ public class ComicDatabaseSqLiteOpenHelper extends SQLiteOpenHelper {
     public static final int VERSION = 1;
 
 
-    String sqlCreate = "create table comic(id integer primary key, titulo text, fecha Date)";
+    String sqlCreate = "create table comic(id integer primary key, titulo text, fecha Date, imagen text)";
     String sqlSelect = "select * from comic";
+    String dropTable = "drop table comic";
+    String sqlComp = "select idComic from comic where idComic = ?";
 
     public ComicDatabaseSqLiteOpenHelper(Context context) {
         super(context, DB, null, VERSION);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         db.execSQL(sqlCreate);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("drop table if exists comic");
+        db.execSQL(dropTable);
         db.execSQL(sqlCreate);
         onCreate(db);
     }
 
+
+    /*
     public ArrayList<Comic> mostrarComics() {
         com = new ComicDatabaseSqLiteOpenHelper(context);
         db = com.getWritableDatabase();
@@ -70,33 +72,37 @@ public class ComicDatabaseSqLiteOpenHelper extends SQLiteOpenHelper {
 
         return listComic;
     }
+    */
 
-    public void consultarListaComics() {
+    public boolean consultarListaComics(String cod) {
         db = com.getReadableDatabase();
         comic = null;
 
-        cursor = db.rawQuery("select * from comic", null);
-        while (cursor.moveToNext()) {
-            comic = new Comic();
-            comic.setNum(cursor.getString(0));
-            comic.setTitle(cursor.getString(1));
-            comic.setDay(cursor.getString(2));
+        cursor = db.rawQuery(sqlComp+cod, null);
 
-            listComic.add(comic);
+       while(cursor.moveToNext()){
+           if(cursor.getString(0).equals(cod)) {
+               return true;
+           }
+       }
+       return false;
+    }
+
+    //Método que me devuelve un comic al pasarle su id
+    /*
+    public Comic dameComic(String cod) {
+        if(consultarListaComics(cod)) {
+            db = com.getReadableDatabase();
 
         }
     }
+    */
 
     public Cursor consultarDatos() {
-        db = this.getWritableDatabase();
+        db = this.getReadableDatabase();
         cursor = db.rawQuery(sqlSelect, null);
         return cursor;
     }
-
-
-
-
-
 
 
 }
