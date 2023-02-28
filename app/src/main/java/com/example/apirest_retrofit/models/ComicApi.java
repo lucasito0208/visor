@@ -12,8 +12,5 @@ public interface ComicApi {
     @GET("{idComic}/info.0.json")
     Call<Comic> find(@Path("idComic") String idComic);
 
-    @GET("{idComic}/info.0.json")
-    Call<Comic> incrementar(@Path("idComic") int idComic);
-
 
 }

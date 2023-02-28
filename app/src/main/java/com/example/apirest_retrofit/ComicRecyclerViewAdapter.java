@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apirest_retrofit.models.Comic;
@@ -14,9 +15,11 @@ import com.example.apirest_retrofit.models.Comic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComicRecyclerViewAdapter extends RecyclerView.Adapter<ComicRecyclerViewAdapter.ViewHolder>{
+public class ComicRecyclerViewAdapter extends RecyclerView.Adapter<ComicRecyclerViewAdapter.ViewHolder> implements View.OnClickListener{
 
     ArrayList<Comic> comics;
+    Comic comic;
+    private View.OnClickListener comicListener;
     public ComicRecyclerViewAdapter(ArrayList<Comic> comics) {
         this.comics = comics;
     }
@@ -27,6 +30,8 @@ public class ComicRecyclerViewAdapter extends RecyclerView.Adapter<ComicRecycler
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.comic_list_item, null, false);
 
+        v.setOnClickListener(this);
+
         return new ViewHolder(v);
     }
 
@@ -35,25 +40,34 @@ public class ComicRecyclerViewAdapter extends RecyclerView.Adapter<ComicRecycler
 
         holder.IdCasilla.setText(comics.get(position).getNum());
         holder.TituloCasilla.setText(comics.get(position).getTitle());
-        String fecha = comics.get(position).getDay() + "/" + comics.get(position).getMonth() + "/" + comics.get(position).getYear();
+        String fecha = comics.get(position).getDay() ;
+        //+ "/" + comics.get(position).getMonth() + "/" + comics.get(position).getYear()
         holder.FechaCasilla.setText(fecha);
 
-        holder.TituloCasilla.setOnClickListener((view -> {
-            //Intent i = new Intent(this, MainActivity2.class);
-
-        }));
-
     }
+
+
 
     @Override
     public int getItemCount() {
         return comics.size();
     }
 
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.comicListener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(comicListener != null){
+            comicListener.onClick(view);
+        }
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView TituloCasilla, IdCasilla, FechaCasilla;
-
 
         public ViewHolder(View view) {
             super(view);
@@ -63,9 +77,6 @@ public class ComicRecyclerViewAdapter extends RecyclerView.Adapter<ComicRecycler
         }
     }
 
-    public interface OnComicClickListener {
-        void onComicClick(Comic comicClicked);
-    }
 }
 
 

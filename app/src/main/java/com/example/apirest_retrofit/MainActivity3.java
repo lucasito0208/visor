@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +18,7 @@ import com.example.apirest_retrofit.models.Comic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity3 extends AppCompatActivity{
+public class MainActivity3 extends AppCompatActivity  {
 
     ArrayList<Comic> listComic;
     RecyclerView recyclerView;
@@ -25,7 +27,7 @@ public class MainActivity3 extends AppCompatActivity{
     Cursor cursor;
 
     TextView num, titulo, fecha;
-
+    ImageView img;
     public ComicDatabaseSqLiteOpenHelper helper;
     SQLiteDatabase db;
 
@@ -36,6 +38,10 @@ public class MainActivity3 extends AppCompatActivity{
         setContentView(R.layout.activity_main3);
 
         recyclerView = findViewById(R.id.recyclerComics);
+        titulo = findViewById(R.id.txtTituloLista);
+        num = findViewById(R.id.idVista);
+        fecha = findViewById(R.id.tvFecha);
+        img = findViewById(R.id.imgComic);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -55,32 +61,35 @@ public class MainActivity3 extends AppCompatActivity{
         adapter = new ComicRecyclerViewAdapter(listComic);
         recyclerView.setAdapter(adapter);
 
-        //onComicClick(comic);
+        adapter.setOnClickListener(view -> {
+            /*
+            Intent ii = new Intent(MainActivity3.this, MainActivity2.class);
+            Toast.makeText(MainActivity3.this, "Selección: "+listComic.get(recyclerView.getChildAdapterPosition(view)).getTitle(), Toast.LENGTH_LONG).show();
+            String titulo = listComic.get(recyclerView.getChildAdapterPosition(view)).getTitle();
+            String fecha = listComic.get(recyclerView.getChildAdapterPosition(view)).getDay();
+            String imagen = listComic.get(recyclerView.getChildAdapterPosition(view)).getImg();
+
+            ii.putExtra("titulo", titulo);
+            ii.putExtra("fecha", fecha);
+            ii.putExtra("imagen", imagen);
+            startActivity(ii);
+
+             */
+            cursor = new ComicDatabaseSqLiteOpenHelper(this).dameComic(listComic.get(recyclerView.getChildAdapterPosition(view)).getNum());
+            while(cursor.moveToNext()) {
+
+                Intent ii = new Intent(MainActivity3.this, MainActivity2.class);
+                String titulo = cursor.getString(1);
+                String fecha = cursor.getString(2);
+                String imagen = cursor.getString(3);
+
+                ii.putExtra("titulo", titulo);
+                ii.putExtra("fecha", fecha);
+                ii.putExtra("imagen", imagen);
+                startActivity(ii);
+        }});
     }
 
 
-    public void onComicClick(Comic comicClicked) {
-
-        titulo = findViewById(R.id.txtTituloLista);
-        num = findViewById(R.id.idVista);
-        titulo.setOnClickListener(view -> {
-            //Intent i = new Intent(MainActivity3.this, MainActivity2.class);
-                //Recuperar los datos de la tabla en la base de datos, y enviarlos al visor
-            //startActivity(i);
-        });
-    }
-
-    /*
-    public Comic retrieveComic(String num){
-        helper = new ComicDatabaseSqLiteOpenHelper(this);
-        db = helper.getReadableDatabase();
-        try{
-
-
-        }catch(Exception e) {
-            Toast.makeText(this, "Error al recuperar comic", Toast.LENGTH_SHORT).show();
-        }
-    }
-    */
 
 }

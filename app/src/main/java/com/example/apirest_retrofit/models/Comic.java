@@ -35,8 +35,6 @@ public class Comic {
         this.day = day;
     }
 
-
-
     public Comic(String img, String num, String title, String day, String month, String year) {
         this.img = img;
         this.num = num;
